@@ -18,6 +18,6 @@
     - install beberapa library sekaligus : npm i sequelize pg pg-hstore --save
     - nama_library - D ; artinya masuk ke dalam devDependencies
     - nama_library --save ; artinya masuk ke dalam dependencies
-    - PERHATIKAN DALAM package.json
+    - PERHATIKAN package.json
 
 
