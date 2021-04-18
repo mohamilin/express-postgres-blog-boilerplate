@@ -1,5 +1,5 @@
 {
-  "name": "express-postgre",
+  "name": "express-postgres-blog",
   "version": "0.0.0",
   "private": true,
   "scripts": {

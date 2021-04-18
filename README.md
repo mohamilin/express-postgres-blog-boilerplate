@@ -1,10 +1,10 @@
-# express-postgre
+# express-postgres
 
 ### Dokumentasi
 
 #### SETUP AWAL
 
-1. Buat folder docker-express-postgre
+1. Buat folder express-postgres
 2. instal express generator dalam folder <strong> docker-express-postgre </strong> : npx express-generator --git --view=ejs
     - Pemilihan express generator karena didalamya sudah memuat :  cookie-parser, debug, ejs, express, http-errors, morgan. 
     - Pemilihan untuk ejs sebagai lokasi styling html dan css
