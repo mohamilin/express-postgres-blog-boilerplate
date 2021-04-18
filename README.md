@@ -1,6 +1,9 @@
 # docker-express-postgre
 
 ### Dokumnetasi
+
+#### SETUP AWAL
+
 1. Buat folder docker-express-postgre
 2. instal express generator dalam folder <strong> docker-express-postgre </strong> : npx express-generator --git --view=ejs
     - Pemilihan express generator karena didalamya sudah memuat :  cookie-parser, debug, ejs, express, http-errors, morgan. 
@@ -20,5 +23,9 @@
     - nama_library - D ; artinya masuk ke dalam devDependencies
     - nama_library --save ; artinya masuk ke dalam dependencies
     - PERHATIKAN package.json
+
+#### Koneksi ke database
+5. Sebelum mengkoneksikan express js ke database, kita harus menginstall postgreSQL ke local 
+    - Install postgreSQL [LINK](https://www.postgresqltutorial.com/install-postgresql/om/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart-id)
 
 
