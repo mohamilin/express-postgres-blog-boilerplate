@@ -13,8 +13,7 @@
         - Sequelize adalah Node.js ORM berbasis janji untuk Postgres, MySQL, MariaDB, SQLite, dan Microsoft SQL Server. Ini fitur dukungan transaksi yang solid, relasi, eager and lazy loading, read replication dan banyak lagi.
         - Sequelize yang saya gunakan dalam project ini versi 6
     - Instal database postgreSQL : npm i pg pg-hstore --save
-    </br>
-    - <strong>TIPS</strong> </br>
+4. TIPS
     - install beberapa library sekaligus : npm i sequelize pg pg-hstore --save
     - nama_library - D ; artinya masuk ke dalam devDependencies
     - nama_library --save ; artinya masuk ke dalam dependencies
