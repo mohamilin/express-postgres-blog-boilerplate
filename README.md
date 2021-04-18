@@ -14,7 +14,7 @@
         - Sequelize yang saya gunakan dalam project ini versi 6
     - Instal database postgreSQL : npm i pg pg-hstore --save
     </br>
-    <strong>TIPS</strong> </br>
+    - <strong>TIPS</strong> </br>
     - install beberapa library sekaligus : npm i sequelize pg pg-hstore --save
     - nama_library - D ; artinya masuk ke dalam devDependencies
     - nama_library --save ; artinya masuk ke dalam dependencies
