@@ -98,5 +98,39 @@
     - JALANKAN di terminal : <strong>npm run dev</strong>
         - Apabila muncul <strong>Connection has been established successfully.</strong>, berarti kita telah berhasil menghubungkan database local dengan aplikasi express yang kita buat.
 
+#### Design Database
+8. Skema dari database yang akan kita gunakan dalam hal ini, masih cukup sederhana, mungkin kedepannya bisa dikembangkan lebih komplek.
+    - Sebelum ke skemanya, kita perlu mengenal jenis relasi antara lain one-to-one, one-to-many, many-to-many
+        - Relasi <strong>One to One </strong> adalah relasi yang mana setiap satu baris data pada tabel pertama hanya berhubungan dengan satu baris pada tabel kedua.
+        - Relasi <strong> One to Many </strong> adalah relasi yang mana setiap satu baris data pada tabel pertama berhubungan dengan lebih dari satu baris pada tabel kedua.
+        - Relasi <strong> Many to Many </strong> adalah relasi yang mana setiap lebih dari satu baris data dari tabel pertama berhubungan dengan lebih dari satu baris data pada tabel kedua. Artinya, kedua tabel masing-masing dapat mengakses banyak data dari tabel yang direlasikan. Dalam hal ini, relasi Many to Many akan menghasilkan tabel ketiga sebagai perantara tabel kesatu dan tabel kedua sebagai tempat untuk menyimpan foreign key dari masing-masing tabel.
+    - Dalam kasus ini, kita akan membuat sebuah API Blog yang terdiri tabel : roles, users, posts, comments, categories, dan tags. Adapun relasinya sebagai berikut :
+        - users -> roles : many-to-many
+            - akan ada tabel tambahan berupa users_roles
+        - users -> posts : one-to-many
+        - posts -> categories : many-to-many
+            - akan ada tabel tambahan berupa posts_categories
+        - posts -> comments : one-to-many
+        - post -> tags : many-to-many
+            - akan ada tabel tambahan berupa posts_tags
+
+#### Migration Database
+9. Nah, sekarang kita masuk kedalam pembahasan, bagaimana sih menjalankan migration dengan sequelize. 
+    - Untuk menjalankan migration dan membuat model, konsepnya seperti ini :
+    - npx sequelize-cli model:generate --name nama_tabel --attributes nama_kolom_1:type_data,nama_kolom_2:type_data
+        - Next, kita lakukan untuk membuat model (tabel) : roles, users, posts, comments, categories, dan tags
+        - tabel roles : npx sequelize-cli model:generate --name roles --attributes name_role:string
+        - tabel users : npx sequelize-cli model:generate --name users --attributes fullName:string,userName:string,email:string,password:string,roleId:integer
+        - tabel categories : npx sequelize-cli model:generate --name categories --attributes name_category:string,slug:string,createdAt:integer,updatedAt:integer
+        - tabel posts : npx sequelize-cli model:generate --name posts --attributes categoryId:integer,title:string,slug:string,short_desc:string,content:text,createdAt:integer,image:string,updatedAt:integer
+        - tabel comments : npx sequelize-cli model:generate --name comments --attributes postId:integer,title_comment:string,short_desc:string,content:text,createdAt:integer,image:string,updatedAt:integer
+        - tabel tags : npx sequelize-cli model:generate --name tags --attributes title_tag:string,createdAt:integer
+        - tabel users_roles : npx sequelize-cli model:generate --name users_roles --attributes userId:integer,roleId:integer
+        - tabel posts_categories :  npx sequelize-cli model:generate --name posts_categories --attributes postId:integer,categoryId:integer
+        - tabel posts_tags :  npx sequelize-cli model:generate --name posts_tags --attributes postId:integer,tagId:integer
+#### Functional programming
+
+10. Jika kita melihat code model, bentuknya berupa class, kita akan ubah bentuknya menjadi fungsi:
+    - Untuk history nya bisa dibandingkan dalam commit => update : model database for this project dan update : change model into function
 
 
