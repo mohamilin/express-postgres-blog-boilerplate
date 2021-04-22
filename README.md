@@ -128,6 +128,7 @@
         - tabel users_roles : npx sequelize-cli model:generate --name users_roles --attributes userId:integer,roleId:integer
         - tabel posts_categories :  npx sequelize-cli model:generate --name posts_categories --attributes postId:integer,categoryId:integer
         - tabel posts_tags :  npx sequelize-cli model:generate --name posts_tags --attributes postId:integer,tagId:integer
+        
 #### Functional programming
 
 10. Jika kita melihat code model, bentuknya berupa class, kita akan ubah bentuknya menjadi fungsi:
