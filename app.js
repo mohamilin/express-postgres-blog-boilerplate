@@ -1,4 +1,3 @@
-require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -8,17 +7,25 @@ const { Sequelize } = require('sequelize');
 const {development} = require('./config/config')
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+
+// connect to database
 const sequelize = new Sequelize(development.database, development.username, development.password, {
   host: development.host,
   dialect: development.dialect
 });
+
+sequelize.sync()
+  .then(() => {
+  console.log({status: 'success', message: 'DB connection sucessful.'});
+  }).catch(err => {
+  console.log({status: 'failed', message: 'Unable to connect to the database', error:  err.message});
+  })
+
+
 const app = express();
-try {
-  sequelize.authenticate()
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
-}
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
