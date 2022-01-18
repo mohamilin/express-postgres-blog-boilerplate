@@ -87,13 +87,21 @@
                 host: development.host,
                 dialect: development.dialect
             });
+           // connect to database
+            const sequelize = new Sequelize(development.database, development.username, development.password, {
+                host: development.host,
+                dialect: development.dialect
+            });
+
+            sequelize.sync()
+                .then(() => {
+                    console.log({status: 'success', message: 'DB connection sucessful.'});
+                }).catch(err => {
+                    console.log({status: 'failed', message: 'Unable to connect to the database', error:  err.message});
+                })
+                
             const app = express();
-            try {
-                sequelize.authenticate()
-                console.log('Connection has been established successfully.');
-            } catch (error) {
-                console.error('Unable to connect to the database:', error);
-            }
+
             ```
     - JALANKAN di terminal : <strong>npm run dev</strong>
         - Apabila muncul <strong>Connection has been established successfully.</strong>, berarti kita telah berhasil menghubungkan database local dengan aplikasi express yang kita buat.
@@ -130,8 +138,35 @@
         - tabel posts_tags :  npx sequelize-cli model:generate --name posts_tags --attributes postId:integer,tagId:integer
         
 #### Functional programming
+   - CATATAN : Terdapat perubahan di bagian app.js tepatnya kode dalam connection to database. 
 
 10. Jika kita melihat code model, bentuknya berupa class, kita akan ubah bentuknya menjadi fungsi:
-    - Untuk history nya bisa dibandingkan dalam commit => update : model database for this project dan update : change model into function
+    - Untuk history nya bisa dibandingkan dalam commit => update : model database for this project dan update : change model into function [link](https://github.com/mohamilin/express-postgres-blog/commit/7a214a990757bc6d140142ead43e0418574ecf54#diff-6340df5e90e95d2874eb74b4aa64b5f7f49ae5e046f0702ab966b045e13889ce)
+
+#### Refactor
+11. Sekarang kita akan melakukan refactor terkait struktur folder. 
+12. Project Structure
+
+```
+src\
+ |--config\         # Environment variables and configuration related things
+ |--controllers\    # Route controllers (controller layer)
+    --api           # for endpoints
+    --web           # for web
+ |--middlewares\    # Custom express middlewares
+ |--models\         # Mongoose models (data layer)
+ |--routes\         # Routes
+ |--services\       # Business logic (service layer)
+ |--utils\          # Utility classes and functions
+ |--validations\    # Request data validation schemas
+ |--app.js          # Express app
+ |--server.js       # App entry point
+test
+ |--fixtures
+ |--integrations
+ |--units
+ |--utils
+ |--setupTestDB.js
+```
 
 
