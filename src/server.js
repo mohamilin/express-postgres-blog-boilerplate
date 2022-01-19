@@ -9,9 +9,10 @@ const app = require('./app');
 const debug = require('debug')('express-postgres-blog:server');
 const http = require('http');
 const logger = require('./config/logger');
-const configs = require('./config/config');
 const env = process.env.NODE_ENV || 'development';
-const config = configs[env];
+
+// eslint-disable-next-line import/no-dynamic-require
+const config = require(`${__dirname}/./config/config.js`)[env];
 
 /**
  * Get port from environment and store in Express.
