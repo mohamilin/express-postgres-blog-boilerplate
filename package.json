@@ -2,25 +2,43 @@
   "name": "express-postgres-blog",
   "version": "0.0.0",
   "private": true,
+  "main": "src/index.js",
+  "author": {
+    "email": "amilinmoh99@gmail.com",
+    "name": "amilin"
+  },
+  "keywords": [
+    "expressjs",
+    "api",
+    "postgres",
+    "sequlize",
+    "rest",
+    "inspirations from Hagop Jamkojian <hagopj13@gmail.com>"
+  ],
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
-
+    "start": "cross-env NODE_ENV=production node src/server.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/server.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "cross-env": "^7.0.3",
     "debug": "~2.6.9",
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.6.2"
+    "sequelize": "^6.6.2",
+    "winston": "^3.4.0"
   },
   "devDependencies": {
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
     "nodemon": "^2.0.7",
+    "prettier": "^2.5.1",
     "sequelize-cli": "^6.2.0"
   }
 }
