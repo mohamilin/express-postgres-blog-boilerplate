@@ -20,7 +20,7 @@
         - Saya memilih postgreSQL, lebih ke arah kenyamanan dan ingin berpartispasi memperbanyak refrensi jenis database ini.
 4. TIPS
     - install beberapa library sekaligus : npm i sequelize pg pg-hstore --save
-    - nama_library - D ; artinya masuk ke dalam devDependencies
+    - nama_library -D ; artinya masuk ke dalam devDependencies
     - nama_library --save ; artinya masuk ke dalam dependencies
     - PERHATIKAN package.json
 
@@ -73,7 +73,6 @@
             ```
         - app.js
             ```js
-            require('dotenv').config()
             const createError = require('http-errors');
             const express = require('express');
             const path = require('path');
@@ -146,10 +145,13 @@
 #### Refactor
 11. Sekarang kita akan melakukan refactor terkait struktur folder. 
 12. Project Structure
-
+    
+    ##### CATATAN : Ketika ada perubahan  pada structure project. Maka structure diatas akan saya update ulang  
 ```
 src\
  |--config\         # Environment variables and configuration related things
+    -logger.js
+    -config.js
  |--controllers\    # Route controllers (controller layer)
     --api           # for endpoints
     --web           # for web
@@ -168,5 +170,17 @@ test
  |--utils
  |--setupTestDB.js
 ```
+1.  Kemudian kita terapkan eslint dan prettier agar kode kita lebih rapi. Install eslint, eslint-config-airbnb-base, eslint-plugin-import, prettier dengan membuat file .eslintrc.json, .prettierrc.json dan .editorconfig
+2.  Adanya perubahan ini, saya lakukan berdasarkan berbagai refrensi yang saya baca. Harapannya Api ini bisa sangat membantu untuk pemula belajar atau bisa juga dijadikan sebagai setup project. 
+
+#### Lanjut koding
+15. Terdapat banyak perubahan dalam develop project ini. Kalau menggunakan step-by-step sbagaimanan tulisan diatas, saya mengalami bug ketika ingin melakukan migration. Akhirnya saya melakukan update pada file config > config.js dan menambahkan .sequelizerc. 
+16. Sehingga ketika ingin menggunakan config.js pada file lain. untuk mengimport config spt ini :
+    - const env = process.env.NODE_ENV || 'development';
+    - const config = require(`${__dirname}/../config/config.js`)[env];
 
 
+##### Logging with winston
+18. Sampai saat ini, kita telah melakukan konfigurasi untuk setup awal project. Kita akan menerapkan logging dengan bantuan package winston. 
+    1.  Winston : Salah satu logging middlewares terbaik. Ketika package ini digunakan dalam project ini  ada sekitar 9,5 juta download / week.  Klik [disini](https://www.npmjs.com/package/winston) untuk dokumentasi lebih detail.
+    2.  Buat file logger.js pada folder config dengan mengimport package winston dan file config.js
