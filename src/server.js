@@ -9,7 +9,7 @@ const app = require('./app');
 const debug = require('debug')('express-postgres-blog:server');
 const http = require('http');
 const logger = require('./config/logger');
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV
 
 // eslint-disable-next-line import/no-dynamic-require
 const config = require(`${__dirname}/./config/config.js`)[env];
