@@ -1,15 +1,14 @@
 const winston = require('winston');
-const env = process.env.NODE_ENV
-const config = require(`${__dirname}/../config/config.js`)[env];
+const setting = require('./settings');
 
 const logger = winston.createLogger({
-  level: config === 'development' ? 'debug' : 'info',
+  level: setting.env === 'development' ? 'debug' : 'info',
   transports: [
     new winston.transports.Console({
-      level: 'debug',
+      level: 'info',
       stderrLevels: ['error'],
       format: winston.format.combine(
-        config === 'development' ? winston.format.colorize() : winston.format.uncolorize(),
+        setting.env === 'development' ? winston.format.colorize() : winston.format.uncolorize(),
         winston.format.splat(),
         winston.format.printf(({ level, message }) => `${level} : ${message}`)
       ),
@@ -17,6 +16,5 @@ const logger = winston.createLogger({
     }),
   ],
 });
-
 
 module.exports = logger;
