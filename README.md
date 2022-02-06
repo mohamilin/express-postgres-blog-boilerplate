@@ -183,4 +183,30 @@ test
 ##### Logging with winston
 18. Sampai saat ini, kita telah melakukan konfigurasi untuk setup awal project. Kita akan menerapkan logging dengan bantuan package winston. 
     1.  Winston : Salah satu logging middlewares terbaik. Ketika package ini digunakan dalam project ini  ada sekitar 9,5 juta download / week.  Klik [disini](https://www.npmjs.com/package/winston) untuk dokumentasi lebih detail.
-    2.  Buat file logger.js pada folder config dengan mengimport package winston dan file config.js
+    2.  Buat file settings.js dan logger.js pada folder config dengan mengimport package winston dan file settings.js ke dalam logger.js
+
+##### CATATAN : kedepannya, file config > settings.js akan banyak penambahan. File ini saya buat untuk penyesuaian konfigurasi yang nanti dibutuhkan. 
+
+##### Penerapan pm2 untuk sesi production
+1.  PM2 is a daemon process manager that will help you manage and keep your application online. 
+2.  Untuk detailnya bisa kunjungi [https://pm2.keymetrics.io/](https://pm2.keymetrics.io/)
+3.  Kita buat file ecosystem.config.json pada root project. 
+    ```json
+    {
+        "apps": [
+        {
+            "name": "blog_api",
+            "script": "src/server.js",
+            "instances": 1,
+            "autorestart": true,
+            "watch": true,
+            "time": true,
+            "env": {
+            "NODE_ENV": "production"
+            }
+        }
+        ]
+    }
+    ```  
+4. Kita install package pm2 : npm i pm2 --save
+5. Kita ubah scripts pada packages.json dengan "start": "pm2 start ecosystem.config.json --no-daemon"
