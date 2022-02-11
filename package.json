@@ -17,10 +17,21 @@
   ],
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
+    "migrate": "cross-env NODE_ENV=production  npx sequelize-cli db:migrate",
+    "migrate:undo": "cross-env NODE_ENV=production  npx sequelize-cli db:migrate",
     "dev": "cross-env NODE_ENV=development nodemon src/server.js",
-    "start-test": "cross-env NODE_ENV=test nodemon src/server.js"
+    "start-test": "cross-env NODE_ENV=test nodemon src/server.js",
+
+    "migrate:dev": "cross-env NODE_ENV=development  npx sequelize-cli db:migrate",
+    "migrate:dev:undo": "cross-env NODE_ENV=development  npx sequelize-cli db:migrate:undo:all",
+    "migrate:test": "cross-env NODE_ENV=test  npx sequelize-cli db:migrate",
+    "migrate:test:undo": "cross-env NODE_ENV=test  npx sequelize-cli db:migrate:undo:all",
+
+    "seed:dev-test": "cross-env NODE_ENV=development  npx sequelize-cli db:seed:all && cross-env NODE_ENV=test npx sequelize-cli db:seed:all",
+    "seed:undo:dev-test": "cross-env NODE_ENV=development  npx sequelize-cli db:seed:undo:all && cross-env NODE_ENV=test npx sequelize-cli db:seed:undo:all"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "cross-env": "^7.0.3",
     "debug": "~2.6.9",
