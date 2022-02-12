@@ -2,6 +2,7 @@ const pgError = require('pg-error');
 const httpStatus = require('http-status');
 const AppError = require('../utils/AppError');
 const { env } = require('../config/settings');
+const logger = require('../config/logger');
 
 const errorConverter = (err, req, res, next) => {
   const error = err;
@@ -11,7 +12,6 @@ const errorConverter = (err, req, res, next) => {
     const message = error.message || httpStatus[statusCode];
     error = new AppError(statusCode, message, false, err.stack);
   }
-
   next(error);
 };
 
@@ -28,6 +28,10 @@ const errorException = (err, req, res, next) => {
     message,
     ...(env === 'development' && { stack: err.stack }),
   };
+
+  if (env === 'development') {
+    logger.error(err);
+  }
 
   res.status(statusCode).send(response);
 };
