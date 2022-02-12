@@ -11,7 +11,7 @@ const environment = {
   test: {
     username: process.env.DB_USERNAME_TEST,
     password: process.env.DB_PASSWORD_TEST,
-    database: process.env.DB_DATABASe_TEST,
+    database: process.env.DB_DATABASE_TEST,
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
   },
