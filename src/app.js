@@ -8,10 +8,10 @@ const { env } = require('./config/settings');
 
 const morgan = require('./middlewares/morgan');
 const { errorConverter, errorException } = require('./middlewares/errorHandler');
-
-const apiRouter = require('./routes/api');
 const AppError = require('./utils/AppError');
 const httpStatus = require('http-status');
+
+const apiRouter = require('./routes/api');
 
 const app = express();
 
