@@ -35,6 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       as: 'roles',
       foreignKey: 'userId',
     });
+
+    User.hasMany(models.tokens, { as: 'tokens' });
   };
   return User;
 };
