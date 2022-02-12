@@ -9,17 +9,17 @@
    - Pemilihan express generator karena didalamya sudah memuat : cookie-parser, debug, ejs, express, http-errors, morgan.
    - Pemilihan untuk ejs sebagai lokasi styling html dan css
 3. Install beberapa library / package yang dibutuhkan, diantaranya :
-   - Instal nodemon : npm i nodemon -D
+   - Instal nodemon : `npm i nodemon -D`
      - nodemon adalah alat yang membantu mengembangkan aplikasi berbasis node.js dengan memulai ulang aplikasi node secara otomatis ketika perubahan file dalam direktori terdeteksi. nodemon tidak memerlukan perubahan tambahan apa pun pada kode atau metode pengembangan Anda. nodemon adalah pembungkus pengganti untuk node.
      - menjalankan nodemon, pada package.json tambahkan dalam scripts => dev : 'nodemon ./bin/www'
      - nodemon yang digunakan dalam project ini versi 2.0.7
-   - Instal sequelize : npm i sequelize --save
+   - Instal sequelize : `npm i sequelize --save`
      - Sequelize adalah Node.js ORM berbasis janji untuk Postgres, MySQL, MariaDB, SQLite, dan Microsoft SQL Server. Ini fitur dukungan transaksi yang solid, relasi, eager and lazy loading, read replication dan banyak lagi.
      - Sequelize yang saya gunakan dalam project ini versi 6
-   - Instal database postgreSQL : npm i pg pg-hstore --save
+   - Instal database postgreSQL : `npm i pg pg-hstore --save`
      - Saya memilih postgreSQL, lebih ke arah kenyamanan dan ingin berpartispasi memperbanyak refrensi jenis database ini.
 4. TIPS
-   - install beberapa library sekaligus : npm i sequelize pg pg-hstore --save
+   - install beberapa library sekaligus : `npm i sequelize pg pg-hstore --save`
    - nama_library -D ; artinya masuk ke dalam devDependencies
    - nama_library --save ; artinya masuk ke dalam dependencies
    - PERHATIKAN package.json
@@ -39,9 +39,9 @@
 6. Dalam aplikasi ini saya mengganti <strong> var dengan const </strong>
 7. Nah, sekarang kita akan koneksikan ke dalam aplikasi express
 
-   - Instal dotenv : npm i dotenv --save
+   - Instal dotenv : `npm i dotenv --save`
      - Penggunaan dotenv, ketika kita memiliki .env, untuk memanggilnya cukup dengan <strong>require('dotenv').config() </strong>
-   - Install Sequelize Command-Line Interface (CLI) : npm install --save-dev sequelize-cli
+   - Install Sequelize Command-Line Interface (CLI) : `npm install --save-dev sequelize-cli`
      - Penggunaan CLI ini akan mempercepat kita dalam melakukan development karena kita akan banyak melakukan banyak tanpa manual
    - Project bootstrapping : npx sequelize-cli init
      - Setelah menjalankan perintah ini, akan terbentuk bebera folder sebagai berikut :
@@ -157,7 +157,7 @@
 11. Sekarang kita akan melakukan refactor terkait struktur folder.
 12. Project Structure
 
-    ##### CATATAN : Ketika ada perubahan pada structure project. Maka structure diatas akan saya update ulang
+    ##### CATATAN : Ketika ada perubahan pada structure project. Maka structure dibawah ini akan saya update ulang
 
 ```
 src\
@@ -166,15 +166,19 @@ src\
     --config.js
     --setting.js
  |--controllers\    # Route controllers (controller layer)
-    --api           # for endpoints
-    --web           # for web
+    --api           # controllers for endpoints
+    --web           # controllers for web / views
  |--middlewares\    # Custom express middlewares
+    --errorHandler.js
+    --morgan.js
  |--models\         # Mongoose models (data layer)
  |--routes\         # Routes
     --api
     --web
  |--services\       # Business logic (service layer)
  |--utils\          # Utility classes and functions
+    --AppError.js
+    --catchError.js
  |--validations\    # Request data validation schemas
  |--app.js          # Express app
  |--server.js       # App entry point
@@ -233,13 +237,13 @@ test
       ]
     }
     ```
-4.  Kita install package pm2 : npm i pm2 --save
+4.  Kita install package pm2 : `npm i pm2 --save`
 5.  Kita ubah scripts pada packages.json dengan "start": "pm2 start ecosystem.config.json --no-daemon"
 6.  Selain itu, ada tambahan scripts untuk menjalankan migrate dan undo migrate database untuk lingkungan production, development, dan test
 
 ##### Penerapan handle errors
 
-1. Kita install, http-status dengan perintah npm i http-status [link](https://github.com/adaltas/node-http-status)
+1. Kita install, http-status dengan perintah `npm i http-status `[link](https://github.com/adaltas/node-http-status)
 2. Kita akan membuat handle error untuk api yang akan kita buat, Buat file catchError.js, ApiError.js pada src > utils
 3. Selain itu, kita buat handle error sebagai middleware, dengan membuat file handlerError.js, didalam file ini terdapat 2 function yaitu errorConverter dan errorException.
 4. Kemudian, ekspor ke app.js
@@ -283,6 +287,16 @@ test
 
 5. Selanjutnya, kita akan register endpoints
 
+<!-- ##### Membuat objek untuk memilih properti yang diinginkan
+1. Kita akan beranjak ke folder utils dengan membuat utilitas tambahan, dengan membuat file select.js dengan menerima 2 parameter yaitu object dan key. dimana object berupa string dan keys berupa array dengan pengembalian berupa object. -->
+   
+##### Membuat validasi
+1. Validasi sangat penting agar aplikasi yang buat tidak banyak mengalami banyak kendala. contohnya jika terdapat fitur payment dengan data yang bisa masuk sesukanya user, maka data yang ada memungkinkan tidak dapat diproses karena berhubungan dengan fungsi matematika. 
+2. Kita buat folder validations. Selain itu, kita perlu menggunakan package Joi. ketika `npm i joi --save`
+3. Untuk sementara kita buat validasi untuk user dan custom. Fungsi costum dapat kita gunakan untuk user sehingga bisa lebih `reusable` code kita.
+4. Buat file user.js dan custom.js kemudian kita buat index.js untuk menampung file validation
+5. Kemudian, kita buat file validates.js pada folder middlewares. Kenapa kita letakkan ini di dalam folder ini ? karena `validates` ini sebagai middleware yang nantinya akan kita terapkan didalam routes dan akan menampung validations yang telah kita buat.
+
 ##### Register endpoints for User
 
 CATATAN :
@@ -307,8 +321,7 @@ const cors = require('cors');
 app.use(cors());
 ```
 
-<!--  -->
-
+###### Model User
 1. Kita telah memiliki models untuk project ini. Didalam models users terdapat beberapa penambahan terkait property didalam models. Contohnya untuk model users :
    ```js
     fullName: {
