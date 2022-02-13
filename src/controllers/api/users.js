@@ -29,6 +29,17 @@ const login = catchError(async (req, res) => {
     },
   });
 });
+
+const refreshToken = catchError(async (req, res) => {
+  const token = await userService.refreshTokens(req.body.refreshToken);
+  res.send({ ...token });
+});
+
+const logout = catchError(async (req, res) => {
+  await userService.logout(req.body.refreshToken);
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
 /**
  * Controller for SuperAdmin
  */
@@ -36,4 +47,6 @@ const login = catchError(async (req, res) => {
 module.exports = {
   register,
   login,
+  logout,
+  refreshToken,
 };
