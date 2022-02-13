@@ -349,7 +349,7 @@ app.use(cors());
 2. Nah, saatnya kita membuat endpointnya. Tambahkan function relasi pada model users dan roles, Kemudian kita buat data seeder dengan menjalankan seeder npx sequelize-cli seed:generate --name name-file. Nanti file yang terbentuk akan masuk ke dalam folder seeder.
 3. Fungsi dari seeder ini, bagi saya sangat berguna sebagai data awal yang harus berada di dalam table. Data yang saya berikan diawal untuk table roles, users, dan users_roles.
 4. Lalu, endpoint apa yang kita buat ? kita buat terlebih dahulu untuk users yaitu register, checkEmail, checkUsername.
-5. Kita buat terlebih dahulu, validasinya yaitu dengan membuat object user yang didalamnya akan divalidasi terkait data yang akan berada di dalam body (fullName, userName, email, password, roleId). Terkait password validasinya kita berikan argumen berupa password yang berasal dari file custom.js
+5. Kita buat terlebih dahulu, validasinya yaitu dengan membuat object user yang didalamnya akan divalidasi terkait data yang akan berada di dalam body `(fullName, userName, email, password, roleId)`. Terkait password validasinya kita berikan argumen berupa password yang berasal dari file custom.js
 6. Kemudian, buat file users.js pada folder services didalamnya terdapat function checkAvailableEmail,checkAvailableUsername, createUser (untuk createUser akan menjalankan checkAvailableEmail, dan checkAvailableUsername ). Lakukan export untuk createUser saja.
 7. Selanjutnya, buat file users.js pada folder controllers > api. Buat function register dengan mengimport httpStatus, catchError, dan userService. fungsi catchError, jika terjadi error maka akan melakukan callback dengan fungsi ini. 
 8. Kita daftarkan controller ke dalam folder routes > api dengan membuat file auth.js. Didalam file ini terdapat endpoint /register
@@ -366,6 +366,9 @@ app.use(cors());
   .
   router.use('/auth', authRoutes);
   ```
+
+### 
+`Perlu diketahui, bahwa didalam controller dan routes terdapat 2 folder yaitu api dan web`
 
 #### Tambahan 
 CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengembangan aplikasi ini diperlukan beberapa `trial and error`. Sehingga Dalam tambahan ini saya ingin memberikan tambahan alur secara singkat yang berkaitan dengan authentikasi dan authorisasi sebagai berikut :
@@ -431,6 +434,22 @@ CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengemb
 1. Sudah kita singgung diatas, bahwa untuk membuat service yang diperuntukkan untuk membuat token perlu ada` generateToken, saveToken, dan generateAuthTokens`. 
 2. Buat file tokens.js pada folder services. kita lakukan beberapa import diantaranya : `jwt, moment, setting / env, token config, AppError, dan type token`. untuk moment kita perlu install moment : `npm i moment --save`
 
-##### Tamabahan untuk Register endpoints for User
-1. Karena kita telah memiliki token maka ketika user register, dalam sistem kita si user akan kita buatkan token. 
+##### Tambahan untuk Register endpoints for User
+1. Karena kita telah memiliki token maka ketika user register, dalam sistem user akan kita buatkan token yang tersimpan dalam database `tabel tokens`.
+   ```js
+  // tambahan funtion register
+  const tokens = await tokenService.generateTokenAuth(user);
+  ```
+
 ##### Login endpoints for User
+1. Selanjutnya, terkait login, bagaimana skenarionya : Ketika user melakukan login, maka data `email dan password` akan diterima dalam controller `login` selanjutnya kedua data tsb dikirim ke `userService login` dan ketika berhasil, hasilnya akan dikirim ke `tokenService.generateTokenAuth`.  
+
+##### Refresh Token endpoints for User
+- Ilustrasi:
+  [link](https://www.researchgate.net/profile/Christian-Huber-21/publication/309365153/figure/fig3/AS:667672714952710@1536196988482/Access-Refresh-Token-Sequence-Flow.png)
+1. `Refresh Token` adalah token khusus yang digunakan untuk mendapatkan token akses tambahan. Ini memungkinkan Anda untuk memiliki token akses yang berumur pendek tanpa harus mengumpulkan kredensial setiap kali token tersebut kedaluwarsa. Anda meminta token penyegaran di samping akses dan/atau token ID sebagai bagian dari autentikasi awal dan alur otorisasi pengguna. Aplikasi kemudian harus menyimpan token penyegaran dengan aman karena memungkinkan pengguna untuk tetap diautentikasi.
+2. Untuk klien seperti aplikasi native, `Refresh Token` / `Penyegaran Token`  persisten membantu meningkatkan pengalaman autentikasi pengguna. Misalnya, token penyegaran persisten memungkinkan pengguna mengakses layanan video streaming di TV pintar mereka tanpa masuk setelah mereka menyelesaikan otorisasi perangkat awal. Dengan perilaku token penyegaran yang persisten, token penyegaran yang sama dikembalikan setiap kali klien membuat permintaan untuk menukar token penyegaran dengan token akses baru hingga masa pakai token penyegaran berakhir. 
+3. Kita perlu membuat services didalam tokens, dengan membuat fungsi `refreshTokens` yang menerima `token berupa refreshToken`. Didalam fungsi ini terdapat 3 fungsi yang akan diproses yaitu `verifyToken, getUserById, await refToken.destroy()` dan pengembaliannya dengan `return generateTokenAuth()`. Untuk fungsi `generateTokenAuth` menerima data dari fungsi `getUserById`.
+4. Namun, kita perlu melakukan `catch` ketika error / gagal yaitu dengan melakukan pengembalian `throw new AppError(httpStatus.UNAUTHORIZED, 'Please authenticate')`
+5. Selanjutnya, Didalam `controller users` perlu kita buatkan  fungsi `refreshToken` yang akan menerima `token berupa refreshToken` dari body kemudian data tsb dikirim ke `userService.refreshTokens`. 
+6. 
