@@ -2,8 +2,9 @@ const httpStatus = require('http-status');
 const Model = require('../models');
 const bcrypt = require('bcryptjs');
 const AppError = require('../utils/AppError');
-const { users } = Model.sequelize.models;
-
+const { users, tokens } = Model.sequelize.models;
+const { tokenTypes } = require('../config/tokens');
+const { verifyToken, generateTokenAuth } = require('./tokens');
 const salt = bcrypt.genSaltSync(10);
 
 const checkAvailableEmail = async (email) => {
@@ -46,7 +47,50 @@ const login = async (email, password) => {
   }
   return user;
 };
+
+const getUserById = async (id) => {
+  console.log('id', id);
+  const user = await users.findOne({ where: { id: id } });
+  return user;
+};
+
+const refreshTokens = async (refreshToken) => {
+  try {
+    const refToken = await verifyToken(refreshToken, tokenTypes.REFRESH_TOKEN);
+    const user = await getUserById(refToken.userId);
+    if (!user) {
+      throw new Error();
+    }
+    await refToken.destroy();
+    return generateTokenAuth(user);
+  } catch (error) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Please authenticate');
+  }
+};
+
+const logout = async (refreshToken) => {
+  const refToken = await tokens.findOne({
+    where: {
+      token: refreshToken,
+      type: tokenTypes.REFRESH_TOKEN,
+      blacklisted: false,
+    },
+  });
+  if (!refToken) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Tidak ditemukan');
+  }
+
+  await tokens.destroy({
+    where: {
+      token: refreshToken,
+      type: tokenTypes.REFRESH_TOKEN,
+      blacklisted: false,
+    },
+  });
+};
 module.exports = {
   createUser,
   login,
+  logout,
+  refreshTokens,
 };
