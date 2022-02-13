@@ -458,7 +458,7 @@ CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengemb
 `*******` Lalu bagaimana dengan memberikan authorisasi kepada user ?  
 `******` Kalau dilihat pada file `roles.js` pada src > config       
 `*****` terdapat 3 roles `bisa disesuaikan dengan kebutuhan`        
-`****` jika jenis rule membutuhkan tugas lebih spesifik           
+`****` jika jenis role membutuhkan tugas lebih spesifik           
 `***` kita dapat memberikan `tugas` dlm bentuk `array`            
 `**` misalnya 2: ['getUsers', 'manageCategory']                  
 `*`                                                            
