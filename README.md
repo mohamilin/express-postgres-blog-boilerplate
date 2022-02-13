@@ -436,10 +436,10 @@ CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengemb
 
 ##### Tambahan untuk Register endpoints for User
 1. Karena kita telah memiliki token maka ketika user register, dalam sistem user akan kita buatkan token yang tersimpan dalam database `tabel tokens`.
-  ```js
-  // tambahan funtion register
-  const tokens = await tokenService.generateTokenAuth(user);
-  ```
+2. tambahan function register
+    ```js
+      const tokens = await tokenService.generateTokenAuth(user);
+    ```
 
 ##### Login endpoints for User
 1. Selanjutnya, terkait login, bagaimana skenarionya : Ketika user melakukan login, maka data `email dan password` akan diterima dalam controller `login` selanjutnya kedua data tsb dikirim ke `userService login` dan ketika berhasil, hasilnya akan dikirim ke `tokenService.generateTokenAuth`.  
