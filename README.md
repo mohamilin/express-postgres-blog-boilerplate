@@ -348,4 +348,83 @@ app.use(cors());
    - Kita juga bisa menggunakan untuk model yang lain, sesuai kebutuhan. untuk dokumentasi bisa dilihat pada [link](https://sequelize.org/v7/manual/model-querying-basics.html).
 2. Nah, saatnya kita membuat endpointnya. Tambahkan function relasi pada model users dan roles, Kemudian kita buat data seeder dengan menjalankan seeder npx sequelize-cli seed:generate --name name-file. Nanti file yang terbentuk akan masuk ke dalam folder seeder.
 3. Fungsi dari seeder ini, bagi saya sangat berguna sebagai data awal yang harus berada di dalam table. Data yang saya berikan diawal untuk table roles, users, dan users_roles.
-4. Lalu, endpoint apa yang kita buat ? kita buat terlebih dahulu untuk users yaitu register, checkEmail, checkUsername dan login.
+4. Lalu, endpoint apa yang kita buat ? kita buat terlebih dahulu untuk users yaitu register, checkEmail, checkUsername.
+5. Kita buat terlebih dahulu, validasinya yaitu dengan membuat object user yang didalamnya akan divalidasi terkait data yang akan berada di dalam body (fullName, userName, email, password, roleId). Terkait password validasinya kita berikan argumen berupa password yang berasal dari file custom.js
+6. Kemudian, buat file users.js pada folder services didalamnya terdapat function checkAvailableEmail,checkAvailableUsername, createUser (untuk createUser akan menjalankan checkAvailableEmail, dan checkAvailableUsername ). Lakukan export untuk createUser saja.
+7. Selanjutnya, buat file users.js pada folder controllers > api. Buat function register dengan mengimport httpStatus, catchError, dan userService. fungsi catchError, jika terjadi error maka akan melakukan callback dengan fungsi ini. 
+8. Kita daftarkan controller ke dalam folder routes > api dengan membuat file auth.js. Didalam file ini terdapat endpoint /register
+  ```js
+  router.post('/register', validates(userValidation.register), userControllers.register);
+  ```
+  - Kalau liat code diatas validasi dilakukan dengan memberikan middleware berupa `validates` dengan menerima argumen yaitu `userValidation.register`. Ketika validasi ini terpenuhi maka akan menjalankan `controller.register`
+9.  Akhirnya, kita buat penampung untuk semua file di dalam folder routes > api berupa file index.js
+  ```js
+  const authRoutes = require('./auth');
+  ....
+  ...
+  ..
+  .
+  router.use('/auth', authRoutes);
+  ```
+
+#### Tambahan 
+CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengembangan aplikasi tidak bisa langsung jadi. Dalam tambahan ini saya ingin memberikan tambahan alur yang berkaitan dengan authentikasi dan authorisasi sebagai berikut :
+  - generateToken : ketika user register dan login akan melakukan `generate token`
+  - generateTokenAuth : ketika user sudah login `->` berhasil maka user akan diberikan `access dan refresh` berupa `accessToken dan refreshToken` yang disertai dengan expirednya berupa `expires`.  Hal ini terjadi setelah menjalankan fungsi `generateToken dan saveToken`.
+  - dan terkait authorisasi, dimana user mendapatkan hak eksklusif untuk dapat melakukan perintah tertentu. sebagaimana kita ketahui, untuk dapat merubah data yang sensitif / penting tidak semua orang / user dapat melakukannya. Bisa kita bayangkan, bagaimana ini jika semua orang / user dapat merubahanya. Betapa kacau dan tidak amannya aplikasi yang kita bangun.
+  - Sehingga, diperlukan roles dengan kemampuan melakukan perintah tertentu. 
+  - Oleh karena itu, dalam `SECTION TAMBAHAN` ini, terdapat beberapa langkah yang harus kita lakukan yaitu : terdapat beberapa tambahan file yang harus kita buat : `tabel dan model tokens, service tokens, config tokens, config roles, config passport middlewares auth.js, middleware authLimiter`
+  - Adapun langkah-langkahnya sebagai berikut :
+
+1. Ketika kita akan menggunakan authentikasi (register / login), maka bagusnya kita menggunakan memiliki tabel `tokens` yang mana tabel ini akan menampung token. 
+2. Jalankan perintah `npx sequelize-cli model:generate --name tokens --attributes token:string,userId:integer,type:string,expires:date,blacklisted:boolean`.
+3. kemudian, pindah ke models > tokens.js & users.js tambahkan associate nya
+  ```js
+  //tokens.js
+  Token.associate = (models) => {
+    Token.belongsTo(models.users, { foreignKey: 'userId', as: 'user' });
+
+  //users.js
+    User.hasMany(models.tokens, { as: 'tokens' });
+  ```
+4. Lalu, didalam token ada apa aja ? nah.. untuk token nanti bisa menampung 2 type yaitu ACCESS_TOKEN, REFRESH_TOKEN. Bukan file `tokens.js` didalam folder config
+5. Selanjutnya, kita perlu menginstall package `jsonwebtoken, passport, dan passport-jwt`. Ketiga package ini akan membantu kita dalam memberikan `PERLINDUNGAN TERHADAP DATA USER`. install dengan perintah `npm i --save jsonwebtoken passport  passport-jwt express-rate-limit`
+6. Kemudian, buat file `roles.js` di dalam config, dengan memberikan listRole yaitu `superAdmin, admin, user`
+   ```js
+   const listRoles = {
+      superAdmin: ['managerUsers', 'getUsers'],
+      admin: ['getUsers'],
+      user: [],
+    };
+
+    const roles = Object.keys(listRoles);
+    const role = new Map(Object.entries(listRoles));
+
+    module.exports = {
+      roles,
+      role,
+    };
+   ```
+7. Lalu, buat file `passport.js` pada config juga. Didalam file ini akan menjalankan `jwtStrategy` dengan membuat `jwtOptions dan jwtVerify` . Namun kita perlu melakukan penambahan konfigurasi didalam setting.js dengan membuat object jwt yang didalamnya terdapat : `secret,accessExpirationMinutes, refreshExpirationDays`. Kita perlu mengimport file ini ke app.js
+   ```js
+    const jwtStrategy = require('./config/passport');
+    ...
+    ..
+    .
+    // jwt | passport
+    app.use(passport.initialize());
+    passport.use('jwt', jwtStrategy);
+   ```
+8. Kemudian buat file `auth.js` didalam middleware. didalam file `auth.js` ini kita akan membuat 2 variabel yaitu `verify dan auth`. Fungsi `auth` yang nantinya akan dijalankan dengan mengirim data ke fungsi `verify`. Didalam fungsi `verify` akan dilakukan pengecekan, terkait data user ada atau tidak. Jika tidak ada maka akan diberikan pengembalian berupa `UNAUTHORIZED`. Kemudian terdapat pengembalian berupa `httpStatus.FORBIDDEN`, <small> Hal ini akan terjadi ketika ada masalah pada resource atau permission website yang Anda akses. 403 forbidden muncul saat web server memahami permintaan Anda, tapi tidak bisa memberikan akses yang diminta</small>
+9.  Setelah itu, kita akan buat fungsi `authRateLimiter`, dimana fungsi ini akan dijalankan dalam `production`. Install `express-rate-limit` dengan perintah `npm i express-rate-limit --save`. Adapun dokumentasinya dapat dibaca pada [link ini](https://www.npmjs.com/package/express-rate-limit). Nantinya authRateLimiter akan kita import pada app.js
+    ```js
+    const authRateLimiter = require('./middlewares/authRateLimiter');
+    ...
+    ..
+    .
+    if (env === 'production') {
+      app.use('/api/v1/auth', authRateLimiter);
+    }
+    ```
+10. 
+##### Login endpoints for User
