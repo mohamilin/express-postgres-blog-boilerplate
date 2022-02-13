@@ -368,7 +368,7 @@ app.use(cors());
   ```
 
 #### Tambahan 
-CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengembangan aplikasi tidak bisa langsung jadi. Dalam tambahan ini saya ingin memberikan tambahan alur yang berkaitan dengan authentikasi dan authorisasi sebagai berikut :
+CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengembangan aplikasi ini diperlukan beberapa `trial and error`. Sehingga Dalam tambahan ini saya ingin memberikan tambahan alur secara singkat yang berkaitan dengan authentikasi dan authorisasi sebagai berikut :
   - generateToken : ketika user register dan login akan melakukan `generate token`
   - generateTokenAuth : ketika user sudah login `->` berhasil maka user akan diberikan `access dan refresh` berupa `accessToken dan refreshToken` yang disertai dengan expirednya berupa `expires`.  Hal ini terjadi setelah menjalankan fungsi `generateToken dan saveToken`.
   - dan terkait authorisasi, dimana user mendapatkan hak eksklusif untuk dapat melakukan perintah tertentu. sebagaimana kita ketahui, untuk dapat merubah data yang sensitif / penting tidak semua orang / user dapat melakukannya. Bisa kita bayangkan, bagaimana ini jika semua orang / user dapat merubahanya. Betapa kacau dan tidak amannya aplikasi yang kita bangun.
@@ -426,5 +426,11 @@ CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengemb
       app.use('/api/v1/auth', authRateLimiter);
     }
     ```
-10. 
+
+##### Membuat service untuk token
+1. Sudah kita singgung diatas, bahwa untuk membuat service yang diperuntukkan untuk membuat token perlu ada` generateToken, saveToken, dan generateAuthTokens`. 
+2. Buat file tokens.js pada folder services. kita lakukan beberapa import diantaranya : `jwt, moment, setting / env, token config, AppError, dan type token`. untuk moment kita perlu install moment : `npm i moment --save`
+
+##### Tamabahan untuk Register endpoints for User
+1. Karena kita telah memiliki token maka ketika user register, dalam sistem kita si user akan kita buatkan token. 
 ##### Login endpoints for User
