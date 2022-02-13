@@ -452,4 +452,13 @@ CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengemb
 3. Kita perlu membuat services didalam tokens, dengan membuat fungsi `refreshTokens` yang menerima `token berupa refreshToken`. Didalam fungsi ini terdapat 3 fungsi yang akan diproses yaitu `verifyToken, getUserById, await refToken.destroy()` dan pengembaliannya dengan `return generateTokenAuth()`. Untuk fungsi `generateTokenAuth` menerima data dari fungsi `getUserById`.
 4. Namun, kita perlu melakukan `catch` ketika error / gagal yaitu dengan melakukan pengembalian `throw new AppError(httpStatus.UNAUTHORIZED, 'Please authenticate')`
 5. Selanjutnya, Didalam `controller users` perlu kita buatkan  fungsi `refreshToken` yang akan menerima `token berupa refreshToken` dari body kemudian data tsb dikirim ke `userService.refreshTokens`. 
-6. 
+
+
+### Catatan :
+`*******` Lalu bagaimana dengan memberikan authorisasi kepada user ?  `*`
+`******` Kalau dilihat pada file `roles.js` pada src > config        `**` 
+`*****` terdapat 3 roles `bisa disesuaikan dengan kebutuhan`        `***`
+`****` jika jenis rule membutuhkan tugas lebih spesifik            `****`
+`***` kita dapat memberikan `tugas` dlm bentuk `array`            `*****`
+`**` misalnya 2: ['getUsers', 'manageCategory']                  `******`
+`*`                                                             `*******`
