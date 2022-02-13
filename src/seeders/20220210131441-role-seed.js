@@ -6,20 +6,17 @@ module.exports = {
       'roles',
       [
         {
-          id: 1,
-          name_role: 'Super Admin',
+          name_role: 'superAdmin',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
         {
-          id: 2,
-          name_role: 'Admin',
+          name_role: 'admin',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
         {
-          id: 3,
-          name_role: 'User',
+          name_role: 'user',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },

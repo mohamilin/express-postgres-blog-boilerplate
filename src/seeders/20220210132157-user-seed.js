@@ -8,7 +8,6 @@ module.exports = {
       'users',
       [
         {
-          id: 1,
           fullName: 'Super Administrator',
           userName: 'super_admin',
           email: 'super_admin@email.com',

@@ -6,7 +6,6 @@ module.exports = {
       'users_roles',
       [
         {
-          id: 1,
           userId: 1,
           roleId: 1,
           createdAt: new Date().toISOString(),
