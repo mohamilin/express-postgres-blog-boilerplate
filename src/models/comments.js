@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     'comments',
     {
       postId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
       title_comment: DataTypes.STRING,
       short_desc: DataTypes.STRING,
       content: DataTypes.TEXT,

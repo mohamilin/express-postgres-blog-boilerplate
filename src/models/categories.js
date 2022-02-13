@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
     'categories',
     {
+      userId: DataTypes.INTEGER,
       name_category: DataTypes.STRING,
       slug: DataTypes.STRING,
       createdAt: DataTypes.INTEGER,

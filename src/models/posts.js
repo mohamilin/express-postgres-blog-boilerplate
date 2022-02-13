@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     'posts',
     {
       categoryId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
       title: DataTypes.STRING,
       slug: DataTypes.STRING,
       short_desc: DataTypes.STRING,
