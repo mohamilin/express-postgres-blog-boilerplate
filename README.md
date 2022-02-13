@@ -436,7 +436,7 @@ CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengemb
 
 ##### Tambahan untuk Register endpoints for User
 1. Karena kita telah memiliki token maka ketika user register, dalam sistem user akan kita buatkan token yang tersimpan dalam database `tabel tokens`.
-   ```js
+  ```js
   // tambahan funtion register
   const tokens = await tokenService.generateTokenAuth(user);
   ```
