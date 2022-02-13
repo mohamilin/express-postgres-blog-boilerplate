@@ -11,6 +11,9 @@ module.exports = {
       postId: {
         type: Sequelize.INTEGER
       },
+      userId:{
+        type: Sequelize.INTEGER
+      },
       title_comment: {
         type: Sequelize.STRING
       },
