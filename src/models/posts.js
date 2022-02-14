@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
       slug: DataTypes.STRING,
       short_desc: DataTypes.STRING,
       content: DataTypes.TEXT,
-      createdAt: DataTypes.INTEGER,
       image: DataTypes.STRING,
-      updatedAt: DataTypes.INTEGER,
+      createdAt: DataTypes.DATE,
+      updatedAt: DataTypes.DATE,
     },
     {}
   );
