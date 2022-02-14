@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.INTEGER,
       name_category: DataTypes.STRING,
       slug: DataTypes.STRING,
-      createdAt: DataTypes.INTEGER,
-      updatedAt: DataTypes.INTEGER,
+      createdAt: new Date().toDateString(),
+      updatedAt: new Date().toDateString(),
     },
     {}
   );
