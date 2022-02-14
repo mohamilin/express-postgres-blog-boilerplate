@@ -15,7 +15,7 @@ const router = Router();
  * UPDATE categories : apapun rolenya, yang terpenting memiliki accessToken / auth()
  *
  */
-router.route('/').post(auth('managerUsers'), categoryController.addCategory).get(categoryController.getCategory);
+router.route('/').get(categoryController.getCategory).post(auth(), categoryController.addCategory);
 
 router.route('/:id').get(categoryController.getCategoryById);
 
