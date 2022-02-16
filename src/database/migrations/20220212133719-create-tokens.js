@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('tokens', {
@@ -6,34 +5,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       token: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       type: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       expires: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       blacklisted: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('tokens');
-  }
+  },
 };
