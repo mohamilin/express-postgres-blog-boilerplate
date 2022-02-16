@@ -9,7 +9,8 @@ const app = require('./app');
 const debug = require('debug')('express-postgres-blog:server');
 const http = require('http');
 const logger = require('./config/logger');
-const env = process.env.NODE_ENV
+
+const env = process.env.NODE_ENV;
 
 // eslint-disable-next-line import/no-dynamic-require
 const config = require(`${__dirname}/./config/config.js`)[env];
@@ -26,18 +27,16 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   host: config.host,
   dialect: config.dialect,
   logging: false,
-  
 });
 
 sequelize
   .sync()
   .then(() => {
-    logger.info(`DB connection sucessful.`)
+    logger.info(`DB connection sucessful.`);
   })
   .catch((err) => {
-    logger.error(`Unable to connect to the database', error: ${err.message}.`)
+    logger.error(`Unable to connect to the database', error: ${err.message}.`);
   });
-
 
 /**
  * Create HTTP server.
@@ -82,7 +81,7 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -105,7 +104,7 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-  logger.info(`Listening to port ${port}`)
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  debug(`Listening on ${bind}`);
+  logger.info(`Listening to port ${port}`);
 }
