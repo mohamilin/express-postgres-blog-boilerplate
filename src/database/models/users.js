@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'users',
@@ -37,9 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.hasMany(models.tokens, { as: 'tokens' });
-    User.hasMany(models.categories, {as: 'categories'})
-    User.hasMany(models.posts, {as: 'posts'})
-
+    User.hasMany(models.categories, { as: 'categories' });
+    User.hasMany(models.posts, { as: 'posts' });
   };
   return User;
 };

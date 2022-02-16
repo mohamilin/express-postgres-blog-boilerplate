@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
     'categories',
@@ -15,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   Category.associate = function (models) {
     // here code relation
     Category.belongsToMany(models.posts, { through: 'posts_categories', foreignKey: 'categoryId', as: 'posts' });
-    Category.belongsTo(models.users, {foreignKey: 'userId', as: 'users'})
+    Category.belongsTo(models.users, { foreignKey: 'userId', as: 'users' });
   };
   return Category;
 };
