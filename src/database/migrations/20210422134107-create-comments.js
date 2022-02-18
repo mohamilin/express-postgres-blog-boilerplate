@@ -22,14 +22,8 @@ module.exports = {
       content: {
         type: Sequelize.TEXT,
       },
-      createdAt: {
-        type: Sequelize.INTEGER,
-      },
       image: {
         type: Sequelize.STRING,
-      },
-      updatedAt: {
-        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
