@@ -22,11 +22,12 @@ const config = require(`${__dirname}/./config/config.js`)[env];
 const port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
-// connect to database
+// connect to database postgres
 const sequelize = new Sequelize(config.database, config.username, config.password, {
   host: config.host,
   dialect: config.dialect,
   logging: false,
+  port: 5432
 });
 
 sequelize
