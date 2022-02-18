@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     Post.belongsToMany(models.categories, { through: 'posts_categories', foreignKey: 'postId', as: 'categories' });
     Post.belongsTo(models.users, { foreignKey: 'userId', as: 'users' });
     Post.belongsToMany(models.tags, { through: 'posts_tags', foreignKey: 'postId', as: 'tags' });
+    Post.hasMany(models.comments, { as: 'comments' });
   };
   return Post;
 };

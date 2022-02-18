@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.tokens, { as: 'tokens' });
     User.hasMany(models.categories, { as: 'categories' });
     User.hasMany(models.posts, { as: 'posts' });
+    User.hasMany(models.categories, { as: 'comments' });
   };
   return User;
 };
