@@ -1,16 +1,21 @@
 const httpStatus = require('http-status');
-const Model = require('../models');
 const bcrypt = require('bcryptjs');
+const Model = require('../database/models');
 const AppError = require('../utils/AppError');
+
 const { users, tokens } = Model.sequelize.models;
 const { tokenTypes } = require('../config/tokens');
 const { verifyToken, generateTokenAuth } = require('./tokens');
+
 const salt = bcrypt.genSaltSync(10);
 
 const checkAvailableEmail = async (email) => {
-  const dataEmail = await users.findOne({ where: { email: email } });
+  const dataEmail = await users.findOne({ where: { email } });
   if (dataEmail) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Email sudah digunakan');
+  }
+  if (!dataEmail) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Email tidak ada');
   }
 };
 
@@ -30,12 +35,15 @@ const createUser = async (payload) => {
 };
 
 const getUserByEmail = async (email) => {
-  return await users.findOne({ where: { email: email } });
+  return await users.findOne({ where: { email } });
 };
 
 const matchPassword = async (email, password) => {
   const user = await getUserByEmail(email);
   const passwords = await bcrypt.compare(password, user.password);
+  if (!password) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Password Salah');
+  }
   return passwords;
 };
 
@@ -49,8 +57,7 @@ const login = async (email, password) => {
 };
 
 const getUserById = async (id) => {
-  console.log('id', id);
-  const user = await users.findOne({ where: { id: id } });
+  const user = await users.findOne({ where: { id } });
   return user;
 };
 
