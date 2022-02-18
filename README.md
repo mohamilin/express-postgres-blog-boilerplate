@@ -462,3 +462,10 @@ CATATAN : Saya mencoba untuk membuat alur sederhana mungkin, namun dalam pengemb
 `***` kita dapat memberikan `tugas` dlm bentuk `array`            
 `**` misalnya 2: ['getUsers', 'manageCategory']                  
 `*`                                                            
+
+
+
+### Docker
+1. docker-compose run --rm npm run migrate:dev
+2. docker-compose build --no-cache
+3. docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
