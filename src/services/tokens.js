@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const config = require('../config/settings');
 const { tokenTypes } = require('../config/tokens');
-const Model = require('../models');
+const Model = require('../database/models');
+
 const { tokens } = Model.sequelize.models;
 
 /**
@@ -25,7 +26,7 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
 const saveToken = async (token, userId, expires, type, blacklisted = false) => {
   const tokenDoc = await tokens.create({
     token,
-    userId: userId,
+    userId,
     expires: expires.toDate(),
     type,
     blacklisted,
@@ -63,13 +64,13 @@ const verifyToken = async (token, type) => {
   const data = jwt.verify(token, config.jwt.secret);
   const dataToken = await tokens.findOne({
     where: {
-      token: token,
-      type: type,
+      token,
+      type,
       userId: data.sub,
       blacklisted: false,
     },
   });
-  
+
   if (!dataToken) {
     throw new Error('Token Not Found');
   }
