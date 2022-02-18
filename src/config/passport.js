@@ -2,6 +2,7 @@ const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 const { jwt } = require('./settings');
 const { tokenTypes } = require('./tokens');
 const Model = require('../database/models');
+
 const { users } = Model.sequelize.models;
 
 const jwtOptions = {
