@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  node-app:
+    build: .
+    image: node-app
+    environment:
+      - PORT=3000
+      - DB_HOST=host.docker.internal
+      - DB_DATABASE_DEV=blog_api_docker
+      - DB_USERNAME_DEV=postgres
+      - DB_PASSWORD_DEV=amilin
+      - DB_DIALECT=postgres
+      - JWT_SECRET=secretjwtffgf
+      - JWT_ACCESS_EXPIRATION_MINUTES=30
+      - JWT_REFRESH_EXPIRATION_DAYS=10
+    ports:
+      - 8080:3000
+    links:
+      - db
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/node-app
+      - /usr/src/node-app/node_modules
+    networks:
+      - node-network
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: amilin
+      POSTGRES_USER: postgres
+      POSTGRES_DB: blog_api_docker
+
+volumes:
+  dbdata:
+
+networks:
+  node-network:
+    driver: bridge
