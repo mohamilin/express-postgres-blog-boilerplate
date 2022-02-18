@@ -9,7 +9,6 @@ const passport = require('passport');
 // config
 const { env } = require('./config/settings');
 const jwtStrategy = require('./config/passport');
-
 // middleware
 const morgan = require('./middlewares/morgan');
 const { errorConverter, errorException } = require('./middlewares/errorHandler');
