@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { categoryController } = require('../../controllers/api');
 const auth = require('../../middlewares/auth');
+
 const router = Router();
 
 /**
