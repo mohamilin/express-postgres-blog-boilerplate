@@ -4,7 +4,7 @@ const { categoryService } = require('../../services');
 const AppError = require('../../utils/AppError');
 
 const addCategory = catchError(async (req, res) => {
-  const user = req.user;
+  const { user } = req;
   const payload = req.body;
   const category = await categoryService.addCategory(user, payload);
   res.status(httpStatus.CREATED).json({
@@ -16,18 +16,17 @@ const addCategory = catchError(async (req, res) => {
 });
 
 const getCategory = catchError(async (req, res) => {
-  const category = await categoryService.getCategory();
-  res.send({
-    success: true,
-    result: {
-      category,
-    },
-  });
+    const category = await categoryService.getCategory();
+    res.send({
+      success: true,
+      result: {
+        category,
+      },
+    });
 });
 
 const getCategoryById = catchError(async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const category = await categoryService.getCategoryById(id);
   if (!category) {
     throw new AppError(httpStatus.NOT_FOUND, `id ${id} tidak ditemukan`);
