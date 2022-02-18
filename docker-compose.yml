@@ -7,9 +7,9 @@ services:
     environment:
       - PORT=3000
       - DB_HOST=host.docker.internal
-      - DB_DATABASE_DEV=blog_api_docker
-      - DB_USERNAME_DEV=postgres
-      - DB_PASSWORD_DEV=amilin
+      - DB_DATABASE_DEV=nama_database
+      - DB_USERNAME_DEV=usernane_database
+      - DB_PASSWORD_DEV=password_database
       - DB_DIALECT=postgres
       - JWT_SECRET=secretjwtffgf
       - JWT_ACCESS_EXPIRATION_MINUTES=30
@@ -29,9 +29,9 @@ services:
   db:
     image: postgres
     environment:
-      POSTGRES_PASSWORD: amilin
-      POSTGRES_USER: postgres
-      POSTGRES_DB: blog_api_docker
+      POSTGRES_PASSWORD: password_postgres
+      POSTGRES_USER: user_postgres
+      POSTGRES_DB: db_postgres_use
 
 volumes:
   dbdata:
