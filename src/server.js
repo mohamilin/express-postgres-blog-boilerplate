@@ -23,12 +23,12 @@ const port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
 // connect to database postgres
-const sequelize = new Sequelize(config.database, config.username, config.password, {
-  host: config.host,
-  dialect: config.dialect,
-  logging: false,
-  port: 5432
-});
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
 
 sequelize
   .sync()
