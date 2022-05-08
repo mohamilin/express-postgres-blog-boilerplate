@@ -16,13 +16,13 @@ const addCategory = catchError(async (req, res) => {
 });
 
 const getCategory = catchError(async (req, res) => {
-    const category = await categoryService.getCategory();
-    res.send({
-      success: true,
-      result: {
-        category,
-      },
-    });
+  const category = await categoryService.getCategory();
+  res.send({
+    success: true,
+    result: {
+      category,
+    },
+  });
 });
 
 const getCategoryById = catchError(async (req, res) => {
