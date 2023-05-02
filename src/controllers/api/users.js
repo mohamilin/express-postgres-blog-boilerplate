@@ -23,6 +23,7 @@ const login = catchError(async (req, res) => {
   const tokens = await tokenService.generateTokenAuth(user);
   res.status(200).json({
     success: true,
+    message: 'success login',
     result: {
       user,
       tokens,
